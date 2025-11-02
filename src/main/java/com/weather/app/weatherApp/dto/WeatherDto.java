@@ -1,17 +1,29 @@
-package com.weather.app.weatherApp.model;
+package com.weather.app.weatherApp.dto;
 
-public class WeatherData {
+import io.swagger.v3.oas.annotations.media.Schema;
 
-    private String name;          // город
-    private double temp;          // температура
-    private String description;   // описание погоды
-    private int humidity;         // влажность
-    private double windSpeed;     // скорость ветра
+@Schema(description = "Данные о погоде")
+public class WeatherDto {
 
-    public WeatherData() {
+    @Schema(description = "Название города", example = "Москва")
+    private String name;
+
+    @Schema(description = "Температура в градусах Цельсия", example = "15.5")
+    private double temp;
+
+    @Schema(description = "Описание погоды", example = "ясно")
+    private String description;
+
+    @Schema(description = "Влажность в процентах", example = "65")
+    private int humidity;
+
+    @Schema(description = "Скорость ветра м/с", example = "3.2")
+    private double windSpeed;
+
+    public WeatherDto() {
         // пустой конструктор для Jackson
     }
-    public WeatherData(String name, double temp, String description, int humidity, double windSpeed) {
+    public WeatherDto(String name, double temp, String description, int humidity, double windSpeed) {
         this.name = name;
         this.temp = temp;
         this.description = description;
