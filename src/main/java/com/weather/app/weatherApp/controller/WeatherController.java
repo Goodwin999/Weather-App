@@ -24,9 +24,12 @@ import org.springframework.web.bind.annotation.*;
 @Tag(name = "Weather API", description = "API для получения данных о погоде")
 public class WeatherController {
 
-    // Spring автоматически внедряет реализацию WeatherService
+    private final WeatherService weatherService;
+
     @Autowired
-    private WeatherService weatherService;
+    public WeatherController(WeatherService weatherService) {
+        this.weatherService = weatherService;
+    }
 
     // Swagger аннотация - описание операции
     @Operation(
