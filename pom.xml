@@ -1,60 +1,77 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!-- Файл конфигурации Maven - описывает проект и его зависимости -->
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <!-- Версия формата POM файла -->
     <modelVersion>4.0.0</modelVersion>
 
+    <!-- Родительский проект Spring Boot - управляет версиями зависимостей -->
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>3.5.7</version>
-        <relativePath/>
+        <version>3.5.7</version>  <!-- Версия Spring Boot -->
+        <relativePath/>  <!-- Искать в репозитории, не в файловой системе -->
     </parent>
 
-    <groupId>com.weather.app</groupId>
-    <artifactId>weather-service</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
-    <name>weather-service</name>
+    <!-- Идентификаторы нашего проекта -->
+    <groupId>com.weather.app</groupId>      <!-- Группа проекта (обычно домен наоборот) -->
+    <artifactId>weather-service</artifactId> <!-- Название артефакта (библиотеки) -->
+    <version>0.0.1-SNAPSHOT</version>       <!-- Версия проекта (SNAPSHOT - разработка) -->
+    <name>weather-service</name>             <!-- Человеко-читаемое имя проекта -->
 
+    <!-- Свойства проекта (переменные) -->
     <properties>
-        <java.version>21</java.version>
-        <springdoc.version>2.6.0</springdoc.version>
+        <java.version>21</java.version>              <!-- Версия Java -->
+        <springdoc.version>2.8.6</springdoc.version> <!-- Версия Swagger/OpenAPI -->
     </properties>
 
+    <!-- Зависимости проекта (библиотеки которые используем) -->
     <dependencies>
+        <!-- Spring Boot Starter для Thymeleaf - шаблонизатор HTML -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-thymeleaf</artifactId>
         </dependency>
+
+        <!-- Spring Boot Starter для Web - REST API, MVC, встроенный Tomcat -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
+
+        <!-- Spring Boot Starter для Validation - валидация данных -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-validation</artifactId>
         </dependency>
 
+        <!-- Swagger/OpenAPI - автоматическая документация API -->
         <dependency>
             <groupId>org.springdoc</groupId>
             <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
-            <version>${springdoc.version}</version>
+            <version>${springdoc.version}</version> <!-- Используем переменную из properties -->
         </dependency>
 
+        <!-- Spring Boot DevTools - горячая перезагрузка при разработке -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-devtools</artifactId>
-            <scope>runtime</scope>
-            <optional>true</optional>
+            <scope>runtime</scope>     <!-- Только во время выполнения -->
+            <optional>true</optional>  <!-- Не передается другим проектам -->
         </dependency>
+
+        <!-- Spring Boot Starter для тестирования -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
-            <scope>test</scope>
+            <scope>test</scope>  <!-- Только для тестов -->
         </dependency>
     </dependencies>
 
+    <!-- Настройки сборки проекта -->
     <build>
         <plugins>
+            <!-- Плагин Spring Boot - создает исполняемый JAR -->
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
