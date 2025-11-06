@@ -1,3 +1,4 @@
+![1477469523_cvety-gory](https://github.com/user-attachments/assets/874ff8bb-9c05-4963-9d33-8280dce8d53e)
 ## Weather App
 Spring Boot приложение для получения данных о погоде через OpenWeather API.
 ## Технологии
