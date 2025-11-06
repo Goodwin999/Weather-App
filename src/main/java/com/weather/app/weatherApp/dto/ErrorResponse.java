@@ -4,14 +4,32 @@ package com.weather.app.weatherApp.dto;
 // Импортируем класс для работы с датой и временем
 import java.time.LocalDateTime;
 
+// Импортируем аннотации Swagger для документации API
+import io.swagger.v3.oas.annotations.media.Schema;
+
 // Класс для унифицированного формата ответов об ошибках
+@Schema(description = "Стандартный формат ответа с ошибкой")
 public class ErrorResponse {
 
     // Код ошибки для машинной обработки
+    @Schema(
+            description = "Уникальный код ошибки для програмной обработки",
+            example = "CITY_NOT_FOUND"
+    )
     private String code;
+
     // Человеко-читаемое сообщение об ошибке
+    @Schema(
+            description = "Человеко-читаемое сообщение об ошибке",
+            example = "Город не найден"
+    )
     private String message;
+
     // Время когда произошла ошибка
+    @Schema(
+            description = "Временная метка когда произошла ошибка",
+            example = "2025-11-06T15:30:45.123"
+    )
     private LocalDateTime timestamp;
 
     // Конструктор создает объект ошибки и автоматически ставит текущее время
@@ -19,6 +37,10 @@ public class ErrorResponse {
         this.code = code;
         this.message = message;
         this.timestamp = LocalDateTime.now(); // Время фиксируется при создании
+    }
+
+    // Пустой конструктор для Jackson
+    public ErrorResponse() {
     }
 
     // Геттер для кода ошибки
