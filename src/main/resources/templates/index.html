@@ -5,59 +5,239 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Погода онлайн</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link th:href="@{/css/style.css}" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #2563eb;
+            --primary-dark: #1d4ed8;
+            --secondary: #64748b;
+            --accent: #f59e0b;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --error: #ef4444;
+            --background: #f8fafc;
+            --surface: #ffffff;
+            --text-primary: #1e293b;
+            --text-secondary: #64748b;
+            --border: #e2e8f0;
+            --shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            min-height: 100vh;
+            color: var(--text-primary);
+        }
+
+        .glass-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 20px;
+            box-shadow: var(--shadow);
+        }
+
+        .nav-glass {
+            background: rgba(255, 255, 255, 0.9) !important;
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            border: none;
+            border-radius: 12px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px -5px rgba(37, 99, 235, 0.4);
+        }
+
+        .form-control {
+            border: 2px solid var(--border);
+            border-radius: 12px;
+            padding: 12px 16px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+
+        .form-control:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+        }
+
+        .weather-temp {
+            font-size: 4rem;
+            font-weight: 300;
+            background: linear-gradient(135deg, var(--primary), #7c3aed);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .metric-card {
+            background: linear-gradient(135deg, #f8fafc, #e2e8f0);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .metric-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow);
+        }
+
+        .success-header {
+            background: linear-gradient(135deg, var(--success), #059669);
+            color: white;
+        }
+
+        .error-header {
+            background: linear-gradient(135deg, var(--error), #dc2626);
+            color: white;
+        }
+
+        .info-header {
+            background: linear-gradient(135deg, var(--secondary), #475569);
+            color: white;
+        }
+
+        .nav-link {
+            color: var(--text-primary) !important;
+            font-weight: 500;
+            border-radius: 10px;
+            margin: 0 5px;
+            transition: all 0.3s ease;
+        }
+
+        .nav-link:hover, .nav-link.active {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white !important;
+        }
+
+        .feature-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            opacity: 0.8;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .animate-fade-in {
+            animation: fadeInUp 0.6s ease-out;
+        }
+    </style>
 </head>
 <body>
-<div class="container mt-5">
-    <!-- Заголовок -->
+<!-- Навигация -->
+<nav class="navbar navbar-expand-lg navbar-light nav-glass">
+    <div class="container">
+        <a class="navbar-brand fw-bold text-primary" th:href="@{/}">
+            <i class="fas fa-cloud-sun me-2"></i>WeatherFlow
+        </a>
+        <div class="navbar-nav">
+            <a class="nav-link active" th:href="@{/}">
+                <i class="fas fa-home me-1"></i>Главная
+            </a>
+            <a class="nav-link" th:href="@{/about}">
+                <i class="fas fa-info-circle me-1"></i>О проекте
+            </a>
+            <a class="nav-link" th:href="@{/swagger-ui.html}">
+                <i class="fas fa-code me-1"></i>API
+            </a>
+        </div>
+    </div>
+</nav>
+
+<div class="container py-5">
     <div class="row justify-content-center">
-        <div class="col-md-8">
-            <h1 class="text-center mb-4">🌤️ Погода онлайн</h1>
+        <div class="col-lg-8">
+            <!-- Заголовок -->
+            <div class="text-center mb-5 animate-fade-in">
+                <h1 class="display-4 fw-bold text-white mb-3">
+                    <i class="fas fa-search me-3"></i>Погода Онлайн
+                </h1>
+                <p class="lead text-light opacity-90">Узнайте актуальную погоду в любом городе мира</p>
+            </div>
 
             <!-- Форма поиска -->
-            <div class="card shadow-sm mb-4">
-                <div class="card-body">
-                    <form th:action="@{/weather}" method="post" class="d-flex">
+            <div class="glass-card mb-5 animate-fade-in" style="animation-delay: 0.1s">
+                <div class="card-header info-header border-0 rounded-top-20">
+                    <h4 class="mb-0"><i class="fas fa-map-marker-alt me-2"></i>Поиск погоды</h4>
+                </div>
+                <div class="card-body p-4">
+                    <form th:action="@{/weather}" method="post" class="d-flex gap-3">
                         <input type="text"
-                               class="form-control me-2"
+                               class="form-control form-control-lg"
                                name="city"
                                th:value="${city}"
-                               placeholder="Введите название города на русском или английском..."
+                               placeholder="Введите город: Москва, London, Paris..."
                                required>
-                        <button type="submit" class="btn btn-primary">Найти погоду</button>
+                        <button type="submit" class="btn btn-primary btn-lg px-4">
+                            <i class="fas fa-search me-2"></i>Найти
+                        </button>
                     </form>
                 </div>
             </div>
 
             <!-- Блок с результатами -->
-            <div th:if="${success != null}">
+            <div th:if="${success != null}" class="animate-fade-in" style="animation-delay: 0.2s">
                 <!-- Успешный результат -->
-                <div th:if="${success}" class="card shadow-sm">
-                    <div class="card-body text-center">
-                        <h2 th:text="${weather.name}" class="card-title"></h2>
-                        <p class="text-muted mb-3" th:text="${weather.description}"></p>
+                <div th:if="${success}" class="glass-card mb-4">
+                    <div class="card-header success-header border-0 rounded-top-20">
+                        <h4 class="mb-0"><i class="fas fa-check-circle me-2"></i>Текущая погода</h4>
+                    </div>
+                    <div class="card-body text-center p-5">
+                        <!-- Город и описание -->
+                        <h2 class="text-primary mb-2 fw-bold" th:text="${weather.name}"></h2>
+                        <p class="text-secondary fs-5 mb-4" th:text="${weather.description}"></p>
 
-                        <div class="display-4 mb-3"
+                        <!-- Температура -->
+                        <div class="weather-temp mb-4"
                              th:text="${#numbers.formatDecimal(weather.temp, 1, 1)} + '°C'">
                         </div>
 
-                        <div class="row text-center">
+                        <!-- Дополнительная информация -->
+                        <div class="row g-4">
                             <div class="col-md-4">
-                                <div class="info-item">
-                                    <strong>💨 Ветер</strong><br>
-                                    <span th:text="${#numbers.formatDecimal(weather.windSpeed, 1, 1)} + ' м/с'"></span>
+                                <div class="metric-card">
+                                    <i class="fas fa-wind feature-icon text-primary"></i>
+                                    <h5 class="text-dark mb-2">Ветер</h5>
+                                    <p class="fs-4 fw-bold text-primary mb-0"
+                                       th:text="${#numbers.formatDecimal(weather.windSpeed, 1, 1)} + ' м/с'">
+                                    </p>
                                 </div>
                             </div>
                             <div class="col-md-4">
-                                <div class="info-item">
-                                    <strong>💧 Влажность</strong><br>
-                                    <span th:text="${weather.humidity} + '%'"></span>
+                                <div class="metric-card">
+                                    <i class="fas fa-tint feature-icon text-info"></i>
+                                    <h5 class="text-dark mb-2">Влажность</h5>
+                                    <p class="fs-4 fw-bold text-info mb-0"
+                                       th:text="${weather.humidity} + '%'">
+                                    </p>
                                 </div>
                             </div>
                             <div class="col-md-4">
-                                <div class="info-item">
-                                    <strong>📍 Город</strong><br>
-                                    <span th:text="${weather.name}"></span>
+                                <div class="metric-card">
+                                    <i class="fas fa-city feature-icon text-success"></i>
+                                    <h5 class="text-dark mb-2">Город</h5>
+                                    <p class="fs-4 fw-bold text-success mb-0"
+                                       th:text="${weather.name}">
+                                    </p>
                                 </div>
                             </div>
                         </div>
@@ -65,27 +245,70 @@
                 </div>
 
                 <!-- Блок ошибки -->
-                <div th:if="${!success}" class="alert alert-danger mt-3" role="alert">
-                    <strong>Ошибка:</strong> <span th:text="${error}"></span>
+                <div th:if="${!success}" class="glass-card">
+                    <div class="card-header error-header border-0 rounded-top-20">
+                        <h4 class="mb-0"><i class="fas fa-exclamation-triangle me-2"></i>Ошибка поиска</h4>
+                    </div>
+                    <div class="card-body text-center p-5">
+                        <i class="fas fa-times-circle feature-icon text-error"></i>
+                        <h5 class="text-error mb-3" th:text="${error}"></h5>
+                        <p class="text-secondary mb-4">Попробуйте ввести другое название города</p>
+                        <a th:href="@{/}" class="btn btn-outline-primary btn-lg">
+                            <i class="fas fa-arrow-left me-2"></i>Новый поиск
+                        </a>
+                    </div>
                 </div>
             </div>
 
             <!-- Инструкция при первом заходе -->
-            <div th:if="${success == null}" class="card shadow-sm">
-                <div class="card-body text-center text-muted">
-                    <p>Введите название города в форму выше чтобы узнать текущую погоду</p>
-                    <small>Примеры: Москва, London, Париж, Berlin</small>
+            <div th:if="${success == null}" class="glass-card animate-fade-in" style="animation-delay: 0.3s">
+                <div class="card-header info-header border-0 rounded-top-20">
+                    <h4 class="mb-0"><i class="fas fa-info-circle me-2"></i>Как это работает</h4>
+                </div>
+                <div class="card-body text-center p-5">
+                    <div class="row g-4">
+                        <div class="col-md-4">
+                            <div class="p-3">
+                                <i class="fas fa-globe feature-icon text-primary"></i>
+                                <h5 class="text-dark">Любой город</h5>
+                                <p class="text-secondary">Работает с городами на русском и английском</p>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="p-3">
+                                <i class="fas fa-bolt feature-icon text-warning"></i>
+                                <h5 class="text-dark">Мгновенно</h5>
+                                <p class="text-secondary">Актуальные данные в реальном времени</p>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="p-3">
+                                <i class="fas fa-mobile-alt feature-icon text-success"></i>
+                                <h5 class="text-dark">Адаптивно</h5>
+                                <p class="text-secondary">Оптимизировано для всех устройств</p>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-
-    <!-- Футер -->
-    <footer class="text-center mt-5">
-        <p><a th:href="@{/about}">О проекте</a> |
-            <a th:href="@{/swagger-ui.html}">API Документация</a></p>
-    </footer>
 </div>
+
+<!-- Футер -->
+<footer class="bg-dark text-white py-4 mt-5">
+    <div class="container text-center">
+        <p class="mb-2 opacity-90">Разработано с <i class="fas fa-heart text-danger"></i> для изучения Spring Boot</p>
+        <p class="mb-0 opacity-75">
+            <a th:href="@{/about}" class="text-white text-decoration-none me-3">
+                <i class="fas fa-info-circle me-1"></i>О проекте
+            </a>
+            <a th:href="@{/swagger-ui.html}" class="text-white text-decoration-none">
+                <i class="fas fa-code me-1"></i>API Документация
+            </a>
+        </p>
+    </div>
+</footer>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>

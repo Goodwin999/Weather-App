@@ -21,19 +21,25 @@ public class WeatherViewController {
     @GetMapping("/")
     public String showHomePage(Model model) {
         model.addAttribute("city", "");
+        model.addAttribute("success", null); // сбрасываем статус
         return "index";
     }
 
     /**
-     * Обработка формы поиска погоды
+     * Обработка формы поиска погоды (ТОЛЬКО POST - убрал GET /weather)
      */
     @PostMapping("/weather")
     public String getWeather(@RequestParam String city, Model model) {
         try {
-            WeatherDto weather = weatherService.getWeather(city);
+            System.out.println("Поиск города: '" + city + "'"); // видим проблему
+            String cleanedCity = city.trim(); // ← УБИРАЕМ ПРОБЕЛЫ!
+            System.out.println("Очищенный город: '" + cleanedCity + "'");
+
+            WeatherDto weather = weatherService.getWeather(cleanedCity);
             model.addAttribute("weather", weather);
             model.addAttribute("success", true);
         } catch (Exception e) {
+            System.out.println("Ошибка: " + e.getMessage());
             model.addAttribute("error", e.getMessage());
             model.addAttribute("success", false);
         }
